@@ -56,3 +56,49 @@ test('blocks the ceiling when written with a thousands separator', () => {
 
   assert.equal(result.ok, false);
 });
+test('blocks malformed comma-separated money figures', () => {
+  const largeLimits = resolveLimits(2500, {
+    floor_pct: 10,
+    ceiling_pct: 50,
+    step_pct: 10,
+    allowed_types: ['REFUND'],
+  });
+
+  const result = check({
+    offer: {
+      ...good,
+      amount: 500,
+      message: 'I can discuss 1,25, and offer 500.',
+    },
+    limits: largeLimits,
+    dispute: { ...dispute, amount: 2500 },
+  });
+  assert.equal(result.ok, false);
+});
+test('allows a valid thousands-separated number below the ceiling', () => {
+  const largeLimits = resolveLimits(5000, {
+    floor_pct: 10,
+    ceiling_pct: 50,
+    step_pct: 10,
+    allowed_types: ['REFUND'],
+  });
+
+  const result = check({
+    offer: {
+      ...good,
+      amount: 500,
+      message: 'The amount discussed is 1,250, and my offer is 500.',
+    },
+    limits: largeLimits,
+    dispute: { ...dispute, amount: 5000 },
+  });
+
+  assert.equal(result.ok, true);
+});
+test('blocks multiple malformed comma groups', () => {
+  const result = run({
+    message: 'I can discuss 1,25,0 and offer 50.',
+  });
+
+  assert.equal(result.ok, false);
+});

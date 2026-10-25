@@ -16,9 +16,11 @@ export function resolveLimits(amount, limits) {
 
 // Every number written in a message, so we can catch a leaked ceiling.
 function numbersIn(text) {
-  const matches = String(text).match(/\d[\d,]*(?:\.\d+)?/g) || [];
+  const matches = String(text).match(/\d[\d,]*\d(?:\.\d+)?|\d(?:\.\d+)?/g) || [];
 
-  return matches.map((n) => money(n.replace(/,/g, '')));
+  return matches
+    .filter((n) => /^\d+(\.\d+)?$/.test(n) || /^\d{1,3}(,\d{3})+(\.\d+)?$/.test(n))
+    .map((n) => money(n.replace(/,/g, '')));
 }
 
 /**
@@ -59,6 +61,15 @@ export function check({ offer, limits, dispute, lastOffer = 0, sentRounds = 0, k
   if (sentRounds >= maxRounds) reasons.push('Maximum number of rounds reached');
   if (dispute.dueAt && new Date(dispute.dueAt) < now) reasons.push('Response deadline has passed');
 
+  const message = offer.message || '';
+  const numberTokens = message.match(/\d[\d,]*\d(?:\.\d+)?|\d(?:\.\d+)?/g) || [];
+  const malformedNumber = numberTokens.some(
+    (n) => n.includes(',') && !/^\d{1,3}(,\d{3})+(\.\d+)?$/.test(n)
+  );
+
+  if (malformedNumber) {
+    reasons.push('Message contains a malformed number');
+  }
   // Leak check: the message may contain the offer amount, nothing else that looks like money.
   const allowed = new Set([amount]);
   for (const n of numbersIn(offer.message || '')) {
