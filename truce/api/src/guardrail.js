@@ -16,7 +16,9 @@ export function resolveLimits(amount, limits) {
 
 // Every number written in a message, so we can catch a leaked ceiling.
 function numbersIn(text) {
-  return (String(text).match(/\d+(?:[.,]\d+)?/g) || []).map((n) => money(n.replace(',', '.')));
+  const matches = String(text).match(/\d[\d,]*(?:\.\d+)?/g) || [];
+
+  return matches.map((n) => money(n.replace(/,/g, '')));
 }
 
 /**
@@ -33,7 +35,10 @@ function numbersIn(text) {
  */
 export function check({ offer, limits, dispute, lastOffer = 0, sentRounds = 0, kill = false, maxRounds = 6, now = new Date() }) {
   const reasons = [];
+  const amountIsNumber = typeof offer.amount === 'number';
   const amount = money(offer.amount);
+
+  if (!amountIsNumber) reasons.push('Amount must be a number');
 
   if (kill) reasons.push('Kill switch is on');
   if (!Number.isFinite(amount) || amount <= 0) reasons.push('Amount must be a positive number');
@@ -41,7 +46,13 @@ export function check({ offer, limits, dispute, lastOffer = 0, sentRounds = 0, k
   if (amount > dispute.amount) reasons.push('Amount is more than the disputed amount');
   if (amount < lastOffer) reasons.push('Offer is lower than the previous offer');
   if (!limits.allowed_types.includes(offer.offer_type)) reasons.push(`Offer type ${offer.offer_type} is not allowed`);
-  if (offer.currency && dispute.currency && offer.currency !== dispute.currency) reasons.push('Currency does not match the dispute');
+
+  if (!offer.currency || !dispute.currency) {
+    reasons.push('Offer and dispute currency are required');
+  } else if (offer.currency !== dispute.currency) {
+    reasons.push('Currency does not match the dispute');
+  }
+
   if (dispute.stage !== 'INQUIRY') reasons.push(`Dispute is at stage ${dispute.stage}, offers only work at INQUIRY`);
   if (!dispute.canMakeOffer) reasons.push('PayPal is not offering a make-offer action on this dispute');
   if (dispute.resolved) reasons.push('Dispute is already resolved');
