@@ -1,0 +1,95 @@
+/* ============================================================
+   Truce design tokens  —  the ONE place colours, type, spacing,
+   radius and shadows are defined. Every component reads from
+   here via var(--token). Change a value here and the whole site
+   restyles. Do NOT hard-code colours or font sizes in components.
+
+   Palette direction: PayPal-inspired fintech (navy + blue,
+   white/neutral surfaces, restrained accents).
+   ============================================================ */
+
+:root {
+  /* ---- Raw palette (PayPal-inspired). Prefer the semantic
+     tokens below in components; these are the source values. ---- */
+  --pp-navy:            #003087; /* deep navy  — major headings, anchors */
+  --pp-blue:            #0070ba; /* primary blue */
+  --pp-blue-strong:     #0070e0; /* interactive blue — buttons, active */
+  --pp-cyan:            #009cde; /* cyan accent — sparingly */
+  --pp-white:           #ffffff;
+  --pp-neutral:         #f0f2f9; /* light neutral surface */
+  --pp-ink:             #0c0c0d; /* main text */
+  --pp-ink-soft:        #545d68; /* secondary text */
+  --pp-border:          #d4d9dc; /* borders */
+
+  /* ---- Semantic colour tokens (use THESE in components) ---- */
+  --color-bg:            #f5f7fb; /* page background (slightly lighter neutral) */
+  --color-surface:       var(--pp-white);        /* cards, panels */
+  --color-surface-sunken:var(--pp-neutral);      /* wells, inset areas */
+  --color-text:          var(--pp-ink);
+  --color-text-muted:    var(--pp-ink-soft);
+  --color-text-invert:   var(--pp-white);
+  --color-border:        var(--pp-border);
+  --color-border-strong: #b9c0c6;
+
+  --color-brand:         var(--pp-navy);          /* headings / brand anchor */
+  --color-primary:       var(--pp-blue-strong);   /* primary action / links */
+  --color-primary-hover: #0059b3;
+  --color-primary-soft:  #e8f1fc;                 /* tinted selected rows */
+  --color-accent:        var(--pp-cyan);
+
+  /* ---- Status colours (semantic only — use where status is real) ---- */
+  --color-success:       #0a7d3e;
+  --color-success-soft:  #e3f3ea;
+  --color-warning:       #946200;
+  --color-warning-soft:  #fbf0d6;
+  --color-danger:        #c4291c;
+  --color-danger-soft:   #fdecea;
+  --color-info:          var(--pp-blue);
+  --color-info-soft:     #e3f1fb;
+
+  /* ---- Focus ring (accessibility) ---- */
+  --focus-ring: 0 0 0 3px rgba(0, 112, 224, 0.35);
+
+  /* ---- Typography ---- */
+  --font-sans: "Helvetica Neue", Helvetica, Arial, "Segoe UI",
+               system-ui, -apple-system, sans-serif;
+
+  --fs-display:  2.75rem;  /* ~44px  page headline */
+  --fs-h1:       1.875rem; /* ~30px  section heading */
+  --fs-h2:       1.25rem;  /* ~20px  card heading */
+  --fs-body:     1rem;     /* ~16px  body */
+  --fs-small:    0.8125rem;/* ~13px  labels / metadata */
+  --fs-button:   0.9375rem;/* ~15px  buttons */
+
+  --lh-tight:  1.2;
+  --lh-normal: 1.5;
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+
+  /* ---- Spacing scale (4px base) ---- */
+  --space-1: 0.25rem;  /*  4px */
+  --space-2: 0.5rem;   /*  8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.5rem;   /* 24px */
+  --space-6: 2rem;     /* 32px */
+  --space-7: 3rem;     /* 48px */
+
+  /* ---- Radius ---- */
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-pill: 999px;
+
+  /* ---- Shadows (restrained, PayPal-like) ---- */
+  --shadow-sm: 0 1px 2px rgba(12, 12, 13, 0.06);
+  --shadow-md: 0 2px 8px rgba(12, 12, 13, 0.08);
+  --shadow-lg: 0 8px 24px rgba(12, 12, 13, 0.10);
+
+  /* ---- Layout ---- */
+  --container-max: 1200px;
+  --header-h: 60px;
+}

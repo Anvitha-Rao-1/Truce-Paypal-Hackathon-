@@ -1,0 +1,46 @@
+/* Disputes list (left panel). Reads tokens.css.
+   (The 3-pane grid itself lives in shell.css.) */
+
+.dlist__head {
+  display: flex; align-items: center; gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+.dlist__title { font-size: var(--fs-h2); font-weight: var(--fw-semibold); }
+.dlist__count {
+  font-size: var(--fs-small); font-weight: var(--fw-semibold);
+  color: var(--color-text-muted);
+  background: var(--color-surface-sunken);
+  border-radius: var(--radius-pill);
+  padding: 0.1rem 0.5rem;
+}
+
+.dlist__tools { display: flex; flex-direction: column; gap: var(--space-2); margin-bottom: var(--space-3); }
+.dlist__tools .ui-input { font-size: var(--fs-small); padding: 0.4rem 0.55rem; }
+
+.dlist__mock { display: flex; gap: var(--space-2); flex-wrap: wrap; margin-bottom: var(--space-3); }
+.dlist__mock .ui-btn { padding: 0.35rem 0.7rem; font-size: var(--fs-small); }
+
+.dlist__items { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+
+.dlist__item {
+  display: block; width: 100%; text-align: left; cursor: pointer;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: var(--space-3);
+  font-family: inherit;
+  transition: border-color .12s, background .12s, box-shadow .12s;
+}
+.dlist__item:hover { border-color: var(--color-border-strong); }
+.dlist__item.is-active {
+  border-color: var(--color-primary);
+  background: var(--color-primary-soft);
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.dlist__row1 { display: flex; align-items: baseline; justify-content: space-between; gap: var(--space-2); }
+.dlist__row1 strong { color: var(--color-text); font-size: var(--fs-body); }
+.dlist__amt { font-weight: var(--fw-semibold); color: var(--color-brand); white-space: nowrap; }
+.dlist__row2 { margin: var(--space-2) 0; }
+.dlist__reason { font-size: var(--fs-small); color: var(--color-text); }
+.dlist__meta { font-size: var(--fs-small); color: var(--color-text-muted); margin-top: 2px; }

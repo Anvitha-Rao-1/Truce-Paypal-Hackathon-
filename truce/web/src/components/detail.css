@@ -1,0 +1,85 @@
+/* Dispute detail (center panel). Reads tokens.css. Lives inside <main>. */
+
+.dd-head {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-4);
+}
+.dd-head__id { font-size: var(--fs-h1); }
+.dd-head__sub { font-size: var(--fs-small); color: var(--color-text-muted); margin-top: 2px; }
+
+/* summary mini-cards */
+.dd-cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-3); margin-bottom: var(--space-4); }
+.dd-card {
+  border: 1px solid var(--color-border); border-radius: var(--radius-sm);
+  padding: var(--space-3); display: flex; flex-direction: column; gap: var(--space-1);
+  background: var(--color-surface);
+}
+.dd-card__k { font-size: var(--fs-small); color: var(--color-text-muted); }
+.dd-card__v { font-size: var(--fs-h2); font-weight: var(--fw-bold); color: var(--color-brand); }
+.dd-card__v--sm { font-size: var(--fs-body); font-weight: var(--fw-semibold); }
+.dd-card--warn { border-color: var(--color-danger); }
+.dd-card--warn .dd-card__v { color: var(--color-danger); }
+
+/* sections */
+.dd-section { margin-top: var(--space-5); }
+.dd-section > h3 {
+  font-size: 1rem; font-weight: var(--fw-semibold); color: var(--color-text);
+  margin-bottom: var(--space-3);
+}
+.dd-hint { font-size: var(--fs-small); margin-top: var(--space-2); }
+
+/* limits form */
+.dd-limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: var(--space-3); }
+.dd-limits .ui-input { max-width: 120px; }
+.dd-autosend { margin: var(--space-3) 0; }
+
+/* pending offer panel */
+.dd-pending {
+  margin-top: var(--space-5);
+  border: 2px solid var(--color-primary);
+  background: var(--color-primary-soft);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+.dd-pending__head { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); }
+.dd-pending__title { font-weight: var(--fw-semibold); color: var(--color-brand); }
+.dd-pending__amt { font-size: var(--fs-h1); font-weight: var(--fw-bold); color: var(--color-brand); margin: var(--space-2) 0; }
+.dd-pending__msg { font-style: italic; color: var(--color-text); }
+.dd-pending__meta { font-size: var(--fs-small); color: var(--color-text-muted); margin-top: var(--space-1); }
+.dd-pending__actions { display: flex; gap: var(--space-2); margin-top: var(--space-3); flex-wrap: wrap; }
+
+/* settled banner */
+.dd-done {
+  margin-top: var(--space-5);
+  background: var(--color-success-soft); color: var(--color-success);
+  border: 1px solid var(--color-success); border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4); font-weight: var(--fw-semibold);
+}
+
+/* offer ladder */
+.dd-ladder { display: flex; flex-direction: column; gap: var(--space-2); }
+.dd-rung { display: grid; grid-template-columns: 68px 1fr 92px; align-items: center; gap: var(--space-3); }
+.dd-rung__label { font-size: var(--fs-small); color: var(--color-text-muted); }
+.dd-rung__bar { height: 10px; background: var(--color-surface-sunken); border-radius: var(--radius-pill); overflow: hidden; }
+.dd-rung__fill { height: 100%; background: var(--color-primary); border-radius: var(--radius-pill); }
+.dd-rung__amt { font-size: var(--fs-small); font-weight: var(--fw-semibold); text-align: right; }
+.dd-rung--pending .dd-rung__fill { background: var(--color-accent); }
+.dd-ladder__ceiling { font-size: var(--fs-small); color: var(--color-text-muted); margin-top: var(--space-2); }
+
+/* conversation timeline */
+.dd-timeline { display: flex; flex-direction: column; gap: var(--space-2); }
+.dd-msg {
+  max-width: 82%; padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md); font-size: var(--fs-small);
+  display: flex; flex-direction: column; gap: 2px;
+}
+.dd-msg__who { font-size: 0.7rem; font-weight: var(--fw-semibold); opacity: .8; }
+.dd-msg--buyer { background: var(--color-surface-sunken); color: var(--color-text); align-self: flex-start; }
+.dd-msg--seller { background: var(--color-primary); color: var(--color-text-invert); align-self: flex-end; }
+.dd-note {
+  align-self: center; text-align: center; font-size: var(--fs-small);
+  background: var(--color-danger-soft); color: var(--color-danger);
+  border-radius: var(--radius-sm); padding: var(--space-2) var(--space-3);
+}
+
+@media (max-width: 520px) { .dd-cards { grid-template-columns: repeat(2, 1fr); } }
