@@ -1,0 +1,164 @@
+/* ============================================================
+   Styles for the reusable UI kit (components/ui/*).
+   Every value comes from tokens.css. Class prefix: .ui-
+   ============================================================ */
+
+/* ---------------- Button ---------------- */
+.ui-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: inherit;
+  font-size: var(--fs-button);
+  font-weight: var(--fw-semibold);
+  line-height: 1;
+  padding: 0.625rem 1.125rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background .15s, border-color .15s, color .15s, opacity .15s;
+  white-space: nowrap;
+}
+.ui-btn--primary {
+  background: var(--color-primary);
+  color: var(--color-text-invert);
+  border-color: var(--color-primary);
+}
+.ui-btn--primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+}
+.ui-btn--secondary {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.ui-btn--secondary:hover:not(:disabled) { background: var(--color-primary-soft); }
+.ui-btn--ghost {
+  background: transparent;
+  color: var(--color-text);
+  border-color: var(--color-border);
+}
+.ui-btn--ghost:hover:not(:disabled) { background: var(--color-surface-sunken); }
+.ui-btn--danger {
+  background: var(--color-surface);
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+}
+.ui-btn--danger:hover:not(:disabled) { background: var(--color-danger-soft); }
+.ui-btn--danger-solid {
+  background: var(--color-danger);
+  color: var(--color-text-invert);
+  border-color: var(--color-danger);
+}
+.ui-btn:disabled { opacity: .5; cursor: not-allowed; }
+.ui-btn--block { width: 100%; }
+
+/* ---------------- Card ---------------- */
+.ui-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+}
+.ui-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+.ui-card__title { font-size: var(--fs-h2); font-weight: var(--fw-semibold); }
+.ui-card__body { padding: var(--space-5); }
+
+/* ---------------- Badge ---------------- */
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-size: var(--fs-small);
+  font-weight: var(--fw-semibold);
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  line-height: 1.4;
+}
+.ui-badge--neutral { background: var(--color-surface-sunken); color: var(--color-text-muted); }
+.ui-badge--success { background: var(--color-success-soft); color: var(--color-success); }
+.ui-badge--warning { background: var(--color-warning-soft); color: var(--color-warning); }
+.ui-badge--danger  { background: var(--color-danger-soft);  color: var(--color-danger); }
+.ui-badge--info    { background: var(--color-info-soft);    color: var(--color-info); }
+.ui-badge__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+/* ---------------- StatTile ---------------- */
+.ui-stat {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+.ui-stat__label { font-size: var(--fs-small); color: var(--color-text-muted); font-weight: var(--fw-medium); }
+.ui-stat__value { font-size: var(--fs-h1); font-weight: var(--fw-bold); color: var(--color-brand); margin-top: var(--space-2); }
+.ui-stat__hint  { font-size: var(--fs-small); color: var(--color-text-muted); margin-top: var(--space-1); }
+.ui-stat--accent .ui-stat__value { color: var(--color-primary); }
+
+/* ---------------- Field ---------------- */
+.ui-field { display: flex; flex-direction: column; gap: var(--space-2); }
+.ui-field__label { font-size: var(--fs-small); font-weight: var(--fw-semibold); color: var(--color-text); }
+.ui-field__hint { font-size: var(--fs-small); color: var(--color-text-muted); }
+.ui-input, .ui-textarea {
+  font-family: inherit;
+  font-size: var(--fs-body);
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 0.55rem 0.7rem;
+  width: 100%;
+}
+.ui-input:focus, .ui-textarea:focus { outline: none; box-shadow: var(--focus-ring); border-color: var(--color-primary); }
+.ui-textarea { resize: vertical; min-height: 64px; }
+.ui-check { display: inline-flex; align-items: center; gap: var(--space-2); font-size: var(--fs-small); cursor: pointer; }
+
+/* ---------------- Spinner ---------------- */
+.ui-spinner {
+  display: inline-block;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  width: 1rem; height: 1rem;
+  animation: ui-spin .7s linear infinite;
+}
+.ui-spinner--invert { border-color: rgba(255,255,255,.4); border-top-color: #fff; }
+.ui-spinner--lg { width: 2rem; height: 2rem; border-width: 3px; }
+@keyframes ui-spin { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .ui-spinner { animation-duration: 1.6s; } }
+
+/* ---------------- EmptyState ---------------- */
+.ui-empty {
+  display: flex; flex-direction: column; align-items: center; text-align: center;
+  gap: var(--space-2); padding: var(--space-7) var(--space-5); color: var(--color-text-muted);
+}
+.ui-empty__icon { font-size: 2rem; line-height: 1; }
+.ui-empty__title { font-size: var(--fs-h2); font-weight: var(--fw-semibold); color: var(--color-text); }
+
+/* ---------------- Banner ---------------- */
+.ui-banner {
+  display: flex; align-items: flex-start; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  font-size: var(--fs-small);
+  border: 1px solid transparent;
+}
+.ui-banner--error   { background: var(--color-danger-soft);  color: var(--color-danger);  border-color: var(--color-danger); }
+.ui-banner--offline { background: var(--color-warning-soft); color: var(--color-warning); border-color: var(--color-warning); }
+.ui-banner--success { background: var(--color-success-soft); color: var(--color-success); border-color: var(--color-success); }
+.ui-banner--info    { background: var(--color-info-soft);    color: var(--color-info);    border-color: var(--color-info); }
+.ui-banner__body { flex: 1; }
+.ui-banner__close {
+  background: none; border: none; cursor: pointer; color: inherit;
+  font-size: 1rem; line-height: 1; padding: 0; opacity: .7;
+}
+.ui-banner__close:hover { opacity: 1; }
