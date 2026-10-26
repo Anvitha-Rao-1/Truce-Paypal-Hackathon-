@@ -23,3 +23,82 @@ test('kill switch blocks everything', () => assert.equal(run({}, { kill: true })
 test('leak: message that reveals the ceiling is blocked', () => assert.equal(run({ message: 'My top is 125 so offer 50.' }).ok, false));
 test('leak: talking about a budget is blocked', () => assert.equal(run({ message: 'That is my maximum I can do.' }).ok, false));
 test('amount above disputed amount is blocked', () => assert.equal(run({ amount: 300 }, {}).ok, false));
+
+test('blocks an amount written as a string instead of a number', () => assert.equal(run({ amount: '999' }).ok, false));
+test('blocks when the offer currency is lowercase and mismatched', () => assert.equal(run({ currency: 'usd' }).ok, false));
+test('leak: message that names the ceiling in words is blocked', () => assert.equal(run({ message: 'My ceiling is 125, but I will offer 50.' }).ok, false));
+
+test('rejects a numeric string even when its value is within the ceiling', () => {
+  assert.equal(run({ amount: '50' }).ok, false);
+});
+
+test('blocks an offer with missing currency', () => assert.equal(run({ currency: undefined }).ok, false));
+
+test('blocks the ceiling when written with a thousands separator', () => {
+  const largeLimits = resolveLimits(2500, {
+    floor_pct: 10,
+    ceiling_pct: 50,
+    step_pct: 10,
+    allowed_types: ['REFUND'],
+  });
+
+  const largeDispute = { ...dispute, amount: 2500 };
+
+  const result = check({
+    offer: {
+      ...good,
+      amount: 500,
+      message: 'I can discuss 1,250, and offer 500.',
+    },
+    limits: largeLimits,
+    dispute: largeDispute,
+  });
+
+  assert.equal(result.ok, false);
+});
+test('blocks malformed comma-separated money figures', () => {
+  const largeLimits = resolveLimits(2500, {
+    floor_pct: 10,
+    ceiling_pct: 50,
+    step_pct: 10,
+    allowed_types: ['REFUND'],
+  });
+
+  const result = check({
+    offer: {
+      ...good,
+      amount: 500,
+      message: 'I can discuss 1,25, and offer 500.',
+    },
+    limits: largeLimits,
+    dispute: { ...dispute, amount: 2500 },
+  });
+  assert.equal(result.ok, false);
+});
+test('allows a valid thousands-separated number below the ceiling', () => {
+  const largeLimits = resolveLimits(5000, {
+    floor_pct: 10,
+    ceiling_pct: 50,
+    step_pct: 10,
+    allowed_types: ['REFUND'],
+  });
+
+  const result = check({
+    offer: {
+      ...good,
+      amount: 500,
+      message: 'The amount discussed is 1,250, and my offer is 500.',
+    },
+    limits: largeLimits,
+    dispute: { ...dispute, amount: 5000 },
+  });
+
+  assert.equal(result.ok, true);
+});
+test('blocks multiple malformed comma groups', () => {
+  const result = run({
+    message: 'I can discuss 1,25,0 and offer 50.',
+  });
+
+  assert.equal(result.ok, false);
+});
