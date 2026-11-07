@@ -21,7 +21,7 @@ function numbersIn(text) {
   return matches
     .filter((n) => /^\d+(\.\d+)?$/.test(n) || /^\d{1,3}(,\d{3})+(\.\d+)?$/.test(n))
     .map((n) => money(n.replace(/,/g, '')));
-}
+} 
 
 /**
  * @param {object} p
@@ -45,6 +45,7 @@ export function check({ offer, limits, dispute, lastOffer = 0, sentRounds = 0, k
   if (kill) reasons.push('Kill switch is on');
   if (!Number.isFinite(amount) || amount <= 0) reasons.push('Amount must be a positive number');
   if (amount > limits.ceiling) reasons.push(`Amount ${amount} is above the ceiling`);
+  if (amount < limits.floor) reasons.push(`Amount ${amount} is below the floor`);
   if (amount > dispute.amount) reasons.push('Amount is more than the disputed amount');
   if (amount < lastOffer) reasons.push('Offer is lower than the previous offer');
   if (!limits.allowed_types.includes(offer.offer_type)) reasons.push(`Offer type ${offer.offer_type} is not allowed`);

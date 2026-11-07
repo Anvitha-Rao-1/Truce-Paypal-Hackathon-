@@ -102,3 +102,10 @@ test('blocks multiple malformed comma groups', () => {
 
   assert.equal(result.ok, false);
 });
+test('blocks an offer below the freelancer floor', () => {
+  assert.equal(run({ amount: 24 }).ok, false);
+});
+
+test('allows an offer exactly at the freelancer floor', () => {
+  assert.equal(run({ amount: 25 }).ok, true);
+});

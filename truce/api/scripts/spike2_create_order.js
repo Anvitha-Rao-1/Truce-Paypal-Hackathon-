@@ -3,15 +3,14 @@
 import { seller, run, show } from './_client.js';
 
 run(async () => {
-  const sellerEmail = process.env.SELLER_EMAIL;
-  if (!sellerEmail) throw new Error('Set SELLER_EMAIL in .env (the sandbox business account email)');
+  
   const order = await seller.createOrder({
     intent: 'CAPTURE',
     purchase_units: [{
       description: 'Logo design, 3 revisions (Truce test)',
       invoice_id: `TRUCE-${Date.now()}`,
       amount: { currency_code: 'USD', value: '25.00' },
-      payee: { email_address: sellerEmail },
+      
     }],
     payment_source: {
       paypal: {
