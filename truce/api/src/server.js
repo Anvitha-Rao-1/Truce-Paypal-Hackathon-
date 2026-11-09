@@ -1,3 +1,4 @@
+import { validateSettings } from './settings.js';
 import { EventEmitter } from 'node:events';
 import cors from 'cors';
 import express from 'express';
@@ -42,15 +43,42 @@ app.get('/api/log', (_req, res) => res.json(state.apiLog.slice(-60)));
 
 // Freelancer settings: what was promised + limits (percent of the disputed amount)
 app.post('/api/disputes/:id/settings', wrap(async (req, res) => {
-  const doc = await negotiator.ensureDoc(req.params.id);
   const { scopeText, limits } = req.body;
-  if (typeof scopeText === 'string') doc.scopeText = scopeText;
-  if (limits) {
-    const l = { ...doc.limits, ...limits };
-    if (l.floor_pct > l.ceiling_pct) return res.status(400).json({ error: 'Floor cannot be above the ceiling' });
-    if (l.ceiling_pct > 100 || l.floor_pct < 0) return res.status(400).json({ error: 'Percentages must be between 0 and 100' });
-    doc.limits = l;
+    if (
+    limits !== undefined &&
+    (!limits || typeof limits !== 'object' || Array.isArray(limits))
+  ) {
+    return res.status(400).json({
+      error: 'Invalid settings',
+      details: ['Limits must be an object'],
+    });
   }
+  const doc = await negotiator.ensureDoc(req.params.id);
+
+  const updatedLimits = limits === undefined
+    ? doc.limits
+    : { ...doc.limits, ...limits };
+
+  const validation = validateSettings({
+    scopeText,
+    limits: limits === undefined ? undefined : updatedLimits,
+  });
+
+  if (!validation.ok) {
+    return res.status(400).json({
+      error: 'Invalid settings',
+      details: validation.errors,
+    });
+  }
+
+  if (scopeText !== undefined) {
+    doc.scopeText = scopeText;
+  }
+
+  if (limits !== undefined) {
+    doc.limits = updatedLimits;
+  }
+
   res.json(await negotiator.save(doc, 'settings'));
 }));
 
